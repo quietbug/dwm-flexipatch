@@ -168,11 +168,11 @@ static void (*bartabmonfns[])(Monitor *) = { NULL /* , customlayoutfn */ };
 #endif // MONOCLE_LAYOUT
 #endif // BAR_TABGROUPS_PATCH
 #if BAR_PANGO_PATCH
-static const char font[]                 = "monospace 10";
+static const char font[]                 = "monospace 9";
 #else
-static const char *fonts[]               = { "monospace:size=10" };
+static const char *fonts[]               = { "monospace:size=9" };
 #endif // BAR_PANGO_PATCH
-static const char dmenufont[]            = "monospace:size=10";
+static const char dmenufont[]            = "monospace:size=9";
 
 static char c000000[]                    = "#000000"; // placeholder value
 
@@ -522,12 +522,23 @@ static const Rule rules[] = {
 	 *	WM_WINDOW_ROLE(STRING) = role
 	 *	_NET_WM_WINDOW_TYPE(ATOM) = wintype
 	 */
-	RULE(.wintype = WTYPE "DIALOG", .isfloating = 1)
-	RULE(.wintype = WTYPE "UTILITY", .isfloating = 1)
-	RULE(.wintype = WTYPE "TOOLBAR", .isfloating = 1)
-	RULE(.wintype = WTYPE "SPLASH", .isfloating = 1)
-	RULE(.class = "Gimp", .tags = 1 << 4)
-	RULE(.class = "Firefox", .tags = 1 << 7)
+	RULE(.wintype = WTYPE "DIALOG",     .isfloating = 1)
+	RULE(.wintype = WTYPE "UTILITY",    .isfloating = 1)
+	RULE(.wintype = WTYPE "TOOLBAR",    .isfloating = 1)
+	RULE(.wintype = WTYPE "SPLASH",     .isfloating = 1)
+	RULE(.title = "Krita - Edit Text",  .isfloating = 1)
+	RULE(.title = "Event Tester",       .isfloating = 1)
+	RULE(.class = "floating",           .isfloating = 1)
+	RULE(.class = "PureRef",            .isfloating = 1)
+
+	RULE(.class = "Chromium",           .tags = 1)
+	RULE(.class = "qutebrowser",        .tags = 1)
+	RULE(.class = "krita",              .tags = 1<<1)
+	RULE(.class = "MyPaint",            .tags = 1<<1)
+	RULE(.class = "Blender",            .tags = 1<<2)
+	RULE(.class = "steam",              .tags = 1<<4)
+	RULE(.class = "Mumble",             .tags = 1<<5)
+
 	#if RENAMED_SCRATCHPADS_PATCH
 	RULE(.instance = "spterm", .scratchkey = 's', .isfloating = 1)
 	#elif SCRATCHPADS_PATCH
@@ -802,6 +813,72 @@ static const Layout layouts[] = {
 };
 #endif // FLEXTILE_DELUXE_LAYOUT
 
+/**
+ * Layout indices
+ * (keep the order identical to the layouts[] definition)
+ */
+enum {
+#if TILE_LAYOUT
+	LAYOUT_TILE,
+#endif
+
+	LAYOUT_FLOATING,
+
+#if MONOCLE_LAYOUT
+	LAYOUT_MONOCLE,
+#endif
+
+#if BSTACK_LAYOUT
+	LAYOUT_BSTACK,
+#endif
+
+#if BSTACKHORIZ_LAYOUT
+	LAYOUT_BSTACKHORIZ,
+#endif
+
+#if CENTEREDMASTER_LAYOUT
+	LAYOUT_CENTEREDMASTER,
+#endif
+
+#if CENTEREDFLOATINGMASTER_LAYOUT
+	LAYOUT_CENTEREDFLOATINGMASTER,
+#endif
+
+#if COLUMNS_LAYOUT
+	LAYOUT_COLUMNS,
+#endif
+
+#if DECK_LAYOUT
+	LAYOUT_DECK,
+#endif
+
+#if FIBONACCI_SPIRAL_LAYOUT
+	LAYOUT_FIBONACCI_SPIRAL,
+#endif
+
+#if FIBONACCI_DWINDLE_LAYOUT
+	LAYOUT_FIBONACCI_DWINDLE,
+#endif
+
+#if GRIDMODE_LAYOUT
+	LAYOUT_GRIDMODE,
+#endif
+
+#if HORIZGRID_LAYOUT
+	LAYOUT_HORIZGRID,
+#endif
+
+#if GAPPLESSGRID_LAYOUT
+	LAYOUT_GAPPLESSGRID,
+#endif
+
+#if NROWGRID_LAYOUT
+	LAYOUT_NROWGRID,
+#endif
+
+	LAYOUT_COUNT
+};
+
 #if XKB_PATCH
 /* xkb frontend */
 static const char *xkb_layouts[]  = {
@@ -811,7 +888,7 @@ static const char *xkb_layouts[]  = {
 #endif // XKB_PATCH
 
 /* key definitions */
-#define MODKEY Mod1Mask
+#define MODKEY Mod4Mask
 #if COMBO_PATCH && SWAPTAGS_PATCH && TAGOTHERMONITOR_PATCH
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      comboview,      {.ui = 1 << TAG} }, \
@@ -1045,8 +1122,8 @@ static const Key keys[] = {
 	#if KEYMODES_PATCH
 	{ MODKEY,                       XK_Escape,     setkeymode,             {.ui = COMMANDMODE} },
 	#endif // KEYMODES_PATCH
-	{ MODKEY,                       XK_p,          spawn,                  {.v = dmenucmd } },
-	{ MODKEY|ShiftMask,             XK_Return,     spawn,                  {.v = termcmd } },
+	{ MODKEY,                       XK_d,          spawn,                  {.v = dmenucmd } },
+	{ MODKEY,                       XK_Return,     spawn,                  {.v = termcmd } },
 	#if RIODRAW_PATCH
 	{ MODKEY|ControlMask,           XK_p,          riospawnsync,           {.v = dmenucmd } },
 	{ MODKEY|ControlMask,           XK_Return,     riospawn,               {.v = termcmd } },
@@ -1101,8 +1178,8 @@ static const Key keys[] = {
 	{ MODKEY|ControlMask,           XK_j,          pushdown,               {0} },
 	{ MODKEY|ControlMask,           XK_k,          pushup,                 {0} },
 	#endif // PUSH_PATCH / PUSH_NO_MASTER_PATCH
-	{ MODKEY,                       XK_i,          incnmaster,             {.i = +1 } },
-	{ MODKEY,                       XK_d,          incnmaster,             {.i = -1 } },
+	{ MODKEY|ShiftMask,             XK_k,          incnmaster,             {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_j,          incnmaster,             {.i = -1 } },
 	#if FLEXTILE_DELUXE_LAYOUT
 	{ MODKEY|ControlMask,           XK_i,          incnstack,              {.i = +1 } },
 	{ MODKEY|ControlMask,           XK_u,          incnstack,              {.i = -1 } },
@@ -1147,7 +1224,7 @@ static const Key keys[] = {
 	#if INSETS_PATCH
 	{ MODKEY|ShiftMask|ControlMask, XK_a,          updateinset,            {.v = &default_inset } },
 	#endif // INSETS_PATCH
-	{ MODKEY,                       XK_Return,     zoom,                   {0} },
+	{ MODKEY,                       XK_p,          zoom,                   {0} },
 	#if VANITYGAPS_PATCH
 	{ MODKEY|Mod4Mask,              XK_u,          incrgaps,               {.i = +1 } },
 	{ MODKEY|Mod4Mask|ShiftMask,    XK_u,          incrgaps,               {.i = -1 } },
@@ -1201,14 +1278,14 @@ static const Key keys[] = {
 	{ MODKEY|Mod1Mask,              XK_j,          focusstack,             {.i = +2 } }, // The +/-2 allows focusstack to also focus on hidden
 	{ MODKEY|Mod1Mask,              XK_k,          focusstack,             {.i = -2 } }, // i.e. minimized clients.
 	#endif // BAR_WINTITLEACTIONS_PATCH
-	{ MODKEY|ShiftMask,             XK_c,          killclient,             {0} },
+	{ MODKEY|ShiftMask,             XK_q,          killclient,             {0} },
 	#if KILLUNSEL_PATCH
 	{ MODKEY|ShiftMask,             XK_x,          killunsel,              {0} },
 	#endif // KILLUNSEL_PATCH
 	#if SELFRESTART_PATCH
 	{ MODKEY|ShiftMask,             XK_r,          self_restart,           {0} },
 	#endif // SELFRESTART_PATCH
-	{ MODKEY|ShiftMask,             XK_q,          quit,                   {0} },
+	{ MODKEY|ShiftMask,             XK_F12,        quit,                   {0} },
 	#if RESTARTSIG_PATCH
 	{ MODKEY|ControlMask|ShiftMask, XK_q,          quit,                   {1} },
 	#endif // RESTARTSIG_PATCH
@@ -1224,9 +1301,12 @@ static const Key keys[] = {
 	#if XRDB_PATCH || XRESOURCES_PATCH
 	{ MODKEY|ShiftMask,             XK_F5,         xrdb,                   {.v = NULL } },
 	#endif // XRDB_PATCH | XRESOURCES_PATCH
-	{ MODKEY,                       XK_t,          setlayout,              {.v = &layouts[0]} },
-	{ MODKEY,                       XK_f,          setlayout,              {.v = &layouts[1]} },
-	{ MODKEY,                       XK_m,          setlayout,              {.v = &layouts[2]} },
+	{ MODKEY,                       XK_t,          setlayout,              {.v = &layouts[LAYOUT_TILE]} },
+	{ MODKEY,                       XK_s,          setlayout,              {.v = &layouts[LAYOUT_FLOATING]} },
+	{ MODKEY,                       XK_f,          setlayout,              {.v = &layouts[LAYOUT_MONOCLE]} },
+	{ MODKEY,                       XK_o,          setlayout,              {.v = &layouts[LAYOUT_CENTEREDFLOATINGMASTER]} },
+	{ MODKEY,                       XK_i,          setlayout,              {.v = &layouts[LAYOUT_DECK]} },
+	{ MODKEY,                       XK_g,          setlayout,              {.v = &layouts[LAYOUT_GRIDMODE]} },
 	#if COLUMNS_LAYOUT
 	{ MODKEY,                       XK_c,          setlayout,              {.v = &layouts[3]} },
 	#endif // COLUMNS_LAYOUT
@@ -1241,8 +1321,7 @@ static const Key keys[] = {
 	{ MODKEY|Mod5Mask|Mod1Mask,     XK_Tab,        rotatelayoutaxis,       {.i = -4 } },   /* flextile, 4 = secondary stack axis */
 	{ MODKEY|ControlMask,           XK_Return,     mirrorlayout,           {0} },          /* flextile, flip master and stack areas */
 	#endif // FLEXTILE_DELUXE_LAYOUT
-	{ MODKEY,                       XK_space,      setlayout,              {0} },
-	{ MODKEY|ShiftMask,             XK_space,      togglefloating,         {0} },
+	{ MODKEY|ShiftMask,             XK_Tab,        togglefloating,         {0} },
 	#if ALWAYSONTOP_PATCH
 	{ MODKEY|ShiftMask,             XK_space,      togglealwaysontop,      {0} },
 	#endif // ALWAYSONTOP_PATCH
@@ -1514,7 +1593,6 @@ static const Button buttons[] = {
 	{ ClkStatusText,        0,                   Button2,        spawn,          {.v = statuscmd } },
 	{ ClkStatusText,        0,                   Button3,        spawn,          {.v = statuscmd } },
 	#else
-	{ ClkStatusText,        0,                   Button2,        spawn,          {.v = termcmd } },
 	#endif // BAR_STATUSCMD_PATCH
 	#if PLACEMOUSE_PATCH
 	/* placemouse options, choose which feels more natural:
@@ -1536,7 +1614,7 @@ static const Button buttons[] = {
 	{ ClkClientWin,         MODKEY,              Button3,        resizeorfacts,  {0} },
 	{ ClkClientWin,         MODKEY|ShiftMask,    Button3,        resizemouse,    {0} },
 	#else
-	{ ClkClientWin,         MODKEY,              Button3,        resizemouse,    {0} },
+	{ ClkClientWin,         MODKEY|ShiftMask,    Button1,        resizemouse,    {0} },
 	#endif // DRAGFACT_PATCH
 	#if TAPRESIZE_PATCH
 	{ ClkClientWin,         MODKEY,              Button4,        resizemousescroll, {.v = &scrollargs[0]} },

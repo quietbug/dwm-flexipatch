@@ -920,7 +920,7 @@
 /* Removes the border when there is only one window visible.
  * https://dwm.suckless.org/patches/noborder/
  */
-#define NOBORDER_PATCH 0
+#define NOBORDER_PATCH 1
 
 /* Enable modifying or removing dmenu in config.def.h which resulted previously in a
  * compilation error because two lines of code hardcode dmenu into dwm.
@@ -1217,7 +1217,7 @@
 /* Spawns programs from currently focused client's working directory.
  * https://dwm.suckless.org/patches/spawn_cwd/
  */
-#define SPAWNCMD_PATCH 0
+#define SPAWNCMD_PATCH 1
 
 /* This patch provides comprehensive utilities for managing the client stack, providing
  * keyboard shortcuts for focusing or placing a client at specific positions in the stack.
@@ -1486,7 +1486,7 @@
  * the float border color, awesomebar, urgentborder and titlecolor patches.
  * https://dwm.suckless.org/patches/xrdb/
  */
-#define XRDB_PATCH 0
+#define XRDB_PATCH 1
 
 /* This patch allows for integer, float and string settings to be loaded from Xresources.
  * Xresources takes precedence over xrdb.
@@ -1527,7 +1527,7 @@
 /* Centered floating master layout.
  * https://dwm.suckless.org/patches/centeredmaster/
  */
-#define CENTEREDFLOATINGMASTER_LAYOUT 0
+#define CENTEREDFLOATINGMASTER_LAYOUT 1
 
 /* Same as the default tile layout except clients in the master area are arranged in
  * columns (i.e. left to right).
@@ -1538,7 +1538,7 @@
 /* Deck layout.
  * https://dwm.suckless.org/patches/deck/
  */
-#define DECK_LAYOUT 0
+#define DECK_LAYOUT 1
 
 /* Fibonacci dwindle layout.
  * https://dwm.suckless.org/patches/fibonacci/
@@ -1564,7 +1564,7 @@
 /* Gridmode (grid) layout.
  * https://dwm.suckless.org/patches/gridmode/
  */
-#define GRIDMODE_LAYOUT 0
+#define GRIDMODE_LAYOUT 1
 
 /* Horizontal grid (horizgrid) layout.
  * https://dwm.suckless.org/patches/horizgrid/
@@ -1581,7 +1581,7 @@
  */
 #define TILE_LAYOUT 1
 
-/* Display the number of master clients in the layout symbol.
+/* Display the number of master clients in the layout symbol. 
  */
 #define TILE_LAYOUT_NMASTER_IN_LT 1
 
