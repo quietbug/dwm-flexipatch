@@ -44,6 +44,11 @@ tile(Monitor *m)
 	}
 	#endif // VANITYGAPS_PATCH
 
+	#ifdef TILE_LAYOUT_NMASTER_IN_LT
+	if (m->nmaster > 0) /* override layout symbol */
+		snprintf(m->ltsymbol, sizeof m->ltsymbol, "[%d]=", m->nmaster);
+	#endif
+
 	getfacts(m, mh, sh, &mfacts, &sfacts, &mrest, &srest);
 
 	for (i = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++)

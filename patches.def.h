@@ -1581,6 +1581,10 @@
  */
 #define TILE_LAYOUT 1
 
+/* Display the number of master clients in the layout symbol.
+ */
+#define TILE_LAYOUT_NMASTER_IN_LT 1
+
 /* Monocle layout (default).
  * This can be optionally disabled in favour of other layouts.
  */
